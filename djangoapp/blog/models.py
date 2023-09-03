@@ -3,6 +3,7 @@ from django.db import models
 from utils.rands import slugify_new
 from utils.images import resize_image
 from django_summernote.models import AbstractAttachment
+from django.urls import reverse
 
 
 class PostAttachment(AbstractAttachment):
@@ -78,13 +79,18 @@ class Page(models.Model):
     )
     content = models.TextField()
 
+    def __str__(self) -> str:
+        return self.title
+
+    def get_absolute_url(self):
+        if not self.is_published:
+            return reverse('blog:index')
+        return reverse('blog:page', args=(self.slug,))
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify_new(self.title, 4)
         return super().save(*args, **kwargs)
-
-    def __str__(self) -> str:
-        return self.title
 
 
 class PostManager(models.Manager):
@@ -144,6 +150,11 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        if not self.is_published:
+            return reverse('blog:index')
+        return reverse('blog:post', args=(self.slug,))
 
     def save(self, *args, **kwargs):
         if not self.slug:
