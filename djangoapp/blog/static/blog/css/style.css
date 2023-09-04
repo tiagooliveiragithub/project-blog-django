@@ -237,6 +237,19 @@ html,
 }
 
 /* Header */
+.header {
+  background: hsl(var(--clr-gray-dk));
+  color: hsl(var(--clr-white));
+}
+
+.header a {
+  color: hsl(var(--clr-white));
+}
+
+.header a:hover {
+  color: hsl(var(--clr-primary-ltst));
+}
+
 .blog-title,
 .blog-description {
   margin: 0;
